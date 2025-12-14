@@ -7,11 +7,13 @@ Model Context Protocol (MCP) server providing access to Financial Modeling Prep'
 
 ## Features
 
-- **Real-time Market Data**: Live stock quotes with price, volume, and market metrics
-- **Company Information**: Detailed profiles including industry, sector, and key executives
-- **Financial Statements**: Income statements, balance sheets, and cash flow statements
-- **Symbol Search**: Find companies by name or ticker across global exchanges
-- **Stock News**: Latest news articles and market sentiment for specific symbols
+- **Real-time Market Data**: Live stock quotes with price, volume, and market metrics ✅ Free
+- **Company Information**: Detailed profiles including industry, sector, and key executives ✅ Free
+- **Financial Statements**: Income statements, balance sheets, and cash flow statements ✅ Free
+- **Symbol Search**: Find companies by name or ticker across global exchanges ✅ Free
+- **Stock News**: Latest news articles and market sentiment for specific symbols 💰 Paid Only
+
+> **Note**: Some features require a paid Financial Modeling Prep plan. The free tier provides access to fundamental data, quotes, and financial statements. News endpoints and certain advanced features require a paid subscription. See [API Limitations](#api-limitations) for details.
 
 ## Installation
 
@@ -105,7 +107,7 @@ Retrieve company cash flow statement data.
 
 **Returns:** Operating cash flow, investing activities, financing activities, and free cash flow.
 
-### `get_stock_news`
+### `get_stock_news` 💰 Paid Only
 Get latest news articles for a stock.
 
 **Parameters:**
@@ -113,6 +115,8 @@ Get latest news articles for a stock.
 - `limit` (optional): Number of articles to return (default: 10)
 
 **Returns:** News headlines, publication dates, URLs, and article summaries.
+
+**Note:** This endpoint requires a paid FMP plan. Free tier users will receive a 402 Payment Required error.
 
 ## Usage Examples
 
@@ -143,10 +147,33 @@ Get recent news about NVIDIA
 Financial Modeling Prep offers different pricing tiers:
 
 - **Free Tier**: 250 requests/day
-- **Starter**: 500 requests/day
+- **Starter**: 500 requests/day  
 - **Professional**: 1,000+ requests/day
 
 See [FMP Pricing](https://financialmodelingprep.com/developer/docs/pricing) for current plans and limits.
+
+## API Limitations
+
+### Free Tier Access
+
+The following features are **included** in the free tier:
+- ✅ Real-time stock quotes (`get_quote`)
+- ✅ Company profiles (`get_company_profile`)
+- ✅ Financial statements - Income, Balance Sheet, Cash Flow (`get_income_statement`, `get_balance_sheet`, `get_cash_flow`)
+- ✅ Symbol search (`search_symbol`)
+
+### Paid Plan Required
+
+The following features require a **paid subscription**:
+- 💰 Stock news (`get_stock_news`) - Returns 402 Payment Required on free tier
+- 💰 Other premium endpoints (not yet implemented in this MCP)
+
+If you attempt to use a paid endpoint with a free API key, you'll receive:
+```
+Error: FMP API error: 402 Payment Required
+```
+
+To access these features, upgrade your plan at [FMP Pricing](https://site.financialmodelingprep.com/pricing-plans).
 
 ## Development
 
