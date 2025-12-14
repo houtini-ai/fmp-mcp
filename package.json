@@ -1,7 +1,7 @@
 {
   "name": "@houtini/fmp-mcp",
-  "version": "1.0.2",
-  "description": "Model Context Protocol (MCP) server for Financial Modeling Prep API - stdio transport for Claude Desktop integration",
+  "version": "1.1.0",
+  "description": "Model Context Protocol (MCP) server for Financial Modeling Prep API - comprehensive financial data including quotes, fundamentals, analyst data, technical indicators, and market insights",
   "type": "module",
   "bin": {
     "fmp-mcp": "./build/index.js"
@@ -19,7 +19,12 @@
     "financial-data",
     "model-context-protocol",
     "claude",
-    "ai-tools"
+    "ai-tools",
+    "analyst-data",
+    "technical-indicators",
+    "market-data",
+    "insider-trading",
+    "economic-data"
   ],
   "author": "Houtini AI",
   "license": "MIT",

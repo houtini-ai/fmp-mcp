@@ -1,19 +1,22 @@
 # Financial Modeling Prep MCP Server
 
-Model Context Protocol (MCP) server providing access to Financial Modeling Prep's comprehensive financial data API. Get real-time stock quotes, company fundamentals, financial statements, and market news directly in Claude Desktop.
+Model Context Protocol (MCP) server providing access to Financial Modeling Prep's comprehensive financial data API. Get real-time stock quotes, company fundamentals, financial statements, market insights, analyst data, and technical indicators directly in Claude Desktop.
 
 [![npm version](https://badge.fury.io/js/@houtini%2Ffmp-mcp.svg)](https://badge.fury.io/js/@houtini%2Ffmp-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
-- **Real-time Market Data**: Live stock quotes with price, volume, and market metrics ✅ Free
-- **Company Information**: Detailed profiles including industry, sector, and key executives ✅ Free
-- **Financial Statements**: Income statements, balance sheets, and cash flow statements ✅ Free
-- **Symbol Search**: Find companies by name or ticker across global exchanges ✅ Free
-- **Stock News**: Latest news articles and market sentiment for specific symbols 💰 Paid Only
-
-> **Note**: Some features require a paid Financial Modeling Prep plan. The free tier provides access to fundamental data, quotes, and financial statements. News endpoints and certain advanced features require a paid subscription. See [API Limitations](#api-limitations) for details.
+- **Real-time Market Data**: Live stock quotes with price, volume, and market metrics
+- **Company Information**: Detailed profiles including industry, sector, and key executives
+- **Financial Statements**: Income statements, balance sheets, and cash flow statements
+- **Market Performance**: Track gainers, losers, most active stocks, and sector performance
+- **Analyst Data**: Price targets, estimates, ratings, and upgrades/downgrades
+- **Insider Trading**: Monitor insider transactions and institutional holdings
+- **Technical Indicators**: RSI, SMA, EMA with multiple timeframes
+- **Economic Data**: GDP, unemployment, inflation, treasury rates, and economic calendar
+- **Historical Charts**: Intraday data from 1-minute to 4-hour intervals
+- **Symbol Search**: Find companies by name or ticker across global exchanges
 
 ## Installation
 
@@ -53,7 +56,9 @@ Replace `your_api_key_here` with your actual API key from Financial Modeling Pre
 
 ## Available Tools
 
-### `get_quote`
+### Core Market Data
+
+#### `get_quote`
 Get real-time stock quote data.
 
 **Parameters:**
@@ -61,7 +66,7 @@ Get real-time stock quote data.
 
 **Returns:** Current price, volume, market cap, P/E ratio, day high/low, and more.
 
-### `search_symbol`
+#### `search_symbol`
 Search for stock symbols by company name or ticker.
 
 **Parameters:**
@@ -69,7 +74,9 @@ Search for stock symbols by company name or ticker.
 
 **Returns:** Matching symbols with company names and exchange information.
 
-### `get_company_profile`
+### Company Fundamentals
+
+#### `get_company_profile`
 Get detailed company profile and fundamental data.
 
 **Parameters:**
@@ -77,7 +84,7 @@ Get detailed company profile and fundamental data.
 
 **Returns:** Company description, industry, sector, CEO, employee count, headquarters, website, and key financial metrics.
 
-### `get_income_statement`
+#### `get_income_statement`
 Retrieve company income statement data.
 
 **Parameters:**
@@ -87,7 +94,7 @@ Retrieve company income statement data.
 
 **Returns:** Revenue, expenses, net income, EPS, and other profitability metrics.
 
-### `get_balance_sheet`
+#### `get_balance_sheet`
 Retrieve company balance sheet data.
 
 **Parameters:**
@@ -97,7 +104,7 @@ Retrieve company balance sheet data.
 
 **Returns:** Assets, liabilities, shareholder equity, and detailed line items.
 
-### `get_cash_flow`
+#### `get_cash_flow`
 Retrieve company cash flow statement data.
 
 **Parameters:**
@@ -107,7 +114,194 @@ Retrieve company cash flow statement data.
 
 **Returns:** Operating cash flow, investing activities, financing activities, and free cash flow.
 
-### `get_stock_news` 💰 Paid Only
+#### `get_key_metrics`
+Get key financial metrics and ratios.
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `period` (optional): "annual" or "quarter" (default: "annual")
+- `limit` (optional): Number of periods to return (default: 5)
+
+**Returns:** P/E ratio, ROE, ROA, debt ratios, current ratio, and more.
+
+#### `get_financial_ratios`
+Get detailed financial ratios (profitability, liquidity, efficiency).
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `period` (optional): "annual" or "quarter" (default: "annual")
+- `limit` (optional): Number of periods to return (default: 5)
+
+**Returns:** Comprehensive ratio analysis including profitability, liquidity, and efficiency metrics.
+
+### Market Performance
+
+#### `get_market_gainers`
+Get stocks with the largest price increases.
+
+**Parameters:** None
+
+**Returns:** Top gaining stocks with price changes and volume.
+
+#### `get_market_losers`
+Get stocks with the largest price drops.
+
+**Parameters:** None
+
+**Returns:** Top losing stocks with price changes and volume.
+
+#### `get_most_active`
+Get most actively traded stocks by volume.
+
+**Parameters:** None
+
+**Returns:** Stocks with highest trading volume.
+
+#### `get_sector_performance`
+Get current sector performance snapshot.
+
+**Parameters:**
+- `date` (optional): Date in YYYY-MM-DD format (defaults to latest)
+
+**Returns:** Performance metrics for all market sectors.
+
+### Analyst Data
+
+#### `get_analyst_estimates`
+Get analyst financial estimates (revenue, EPS forecasts).
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `period` (optional): "annual" or "quarter" (default: "annual")
+- `limit` (optional): Number of periods to return (default: 10)
+
+**Returns:** Analyst revenue and earnings estimates with consensus figures.
+
+#### `get_price_target`
+Get analyst price target summary.
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+
+**Returns:** Average, high, low, and median price targets from analysts.
+
+#### `get_analyst_ratings`
+Get analyst ratings and upgrades/downgrades.
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+
+**Returns:** Recent analyst rating changes, upgrades, downgrades, and recommendations.
+
+### Insider Trading & Institutional
+
+#### `get_insider_trading`
+Get recent insider trading activity.
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `limit` (optional): Number of transactions to return (default: 100)
+
+**Returns:** Insider buy/sell transactions with names, dates, and amounts.
+
+#### `get_institutional_holders`
+Get institutional ownership (13F filings).
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `limit` (optional): Number of holders to return (default: 100)
+
+**Returns:** Top institutional holders with share counts and filing dates.
+
+### Technical Indicators
+
+#### `get_technical_indicator_rsi`
+Get Relative Strength Index (RSI).
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `timeframe` (required): "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
+- `period` (optional): Period length (default: 14)
+
+**Returns:** RSI values with timestamps for momentum analysis.
+
+#### `get_technical_indicator_sma`
+Get Simple Moving Average (SMA).
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `timeframe` (required): "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
+- `period` (optional): Period length (default: 10)
+
+**Returns:** SMA values with timestamps for trend analysis.
+
+#### `get_technical_indicator_ema`
+Get Exponential Moving Average (EMA).
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `timeframe` (required): "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
+- `period` (optional): Period length (default: 10)
+
+**Returns:** EMA values with timestamps for trend analysis.
+
+### Historical Data
+
+#### `get_historical_chart`
+Get historical price data with flexible time intervals.
+
+**Parameters:**
+- `symbol` (required): Stock ticker symbol
+- `interval` (required): "1min", "5min", "15min", "30min", "1hour", "4hour"
+- `from` (optional): Start date in YYYY-MM-DD format
+- `to` (optional): End date in YYYY-MM-DD format
+
+**Returns:** OHLC price data with volume for the specified interval.
+
+### Economic Data
+
+#### `get_economic_calendar`
+Get upcoming economic data releases calendar.
+
+**Parameters:**
+- `from` (optional): Start date in YYYY-MM-DD format
+- `to` (optional): End date in YYYY-MM-DD format
+
+**Returns:** Scheduled economic announcements with dates and expected impact.
+
+#### `get_economic_indicator`
+Get economic indicator data (GDP, unemployment, inflation, etc.).
+
+**Parameters:**
+- `name` (required): Indicator name (e.g., "GDP", "unemploymentRate", "CPI")
+- `from` (optional): Start date in YYYY-MM-DD format
+- `to` (optional): End date in YYYY-MM-DD format
+
+**Returns:** Historical values for the specified economic indicator.
+
+### Events & Calendars
+
+#### `get_earnings_calendar`
+Get upcoming earnings announcements calendar.
+
+**Parameters:**
+- `from` (optional): Start date in YYYY-MM-DD format
+- `to` (optional): End date in YYYY-MM-DD format
+
+**Returns:** Upcoming earnings dates with EPS estimates.
+
+### Index Data
+
+#### `get_sp500_constituents`
+Get list of S&P 500 index constituents.
+
+**Parameters:** None
+
+**Returns:** All companies in the S&P 500 with symbols and details.
+
+### News (Paid Feature)
+
+#### `get_stock_news`
 Get latest news articles for a stock.
 
 **Parameters:**
@@ -116,7 +310,7 @@ Get latest news articles for a stock.
 
 **Returns:** News headlines, publication dates, URLs, and article summaries.
 
-**Note:** This endpoint requires a paid FMP plan. Free tier users will receive a 402 Payment Required error.
+**Note:** This endpoint requires a paid FMP plan.
 
 ## Usage Examples
 
@@ -131,15 +325,31 @@ Show me Tesla's quarterly income statements for the last 8 quarters
 ```
 
 ```
-Compare the P/E ratios of Microsoft and Google
+What are today's biggest market gainers?
 ```
 
 ```
-Search for semiconductor companies
+Get analyst price targets for NVIDIA
 ```
 
 ```
-Get recent news about NVIDIA
+Show me insider trading activity for Microsoft
+```
+
+```
+Calculate the 14-day RSI for TSLA on the daily timeframe
+```
+
+```
+What's the current sector performance?
+```
+
+```
+Get upcoming earnings announcements for this week
+```
+
+```
+Show me institutional holders of Amazon
 ```
 
 ## API Rate Limits
@@ -152,35 +362,12 @@ Financial Modeling Prep offers different pricing tiers:
 
 See [FMP Pricing](https://financialmodelingprep.com/developer/docs/pricing) for current plans and limits.
 
-## API Limitations
-
-### Free Tier Access
-
-The following features are **included** in the free tier:
-- ✅ Real-time stock quotes (`get_quote`)
-- ✅ Company profiles (`get_company_profile`)
-- ✅ Financial statements - Income, Balance Sheet, Cash Flow (`get_income_statement`, `get_balance_sheet`, `get_cash_flow`)
-- ✅ Symbol search (`search_symbol`)
-
-### Paid Plan Required
-
-The following features require a **paid subscription**:
-- 💰 Stock news (`get_stock_news`) - Returns 402 Payment Required on free tier
-- 💰 Other premium endpoints (not yet implemented in this MCP)
-
-If you attempt to use a paid endpoint with a free API key, you'll receive:
-```
-Error: FMP API error: 402 Payment Required
-```
-
-To access these features, upgrade your plan at [FMP Pricing](https://site.financialmodelingprep.com/pricing-plans).
-
 ## Development
 
 ### Local Installation
 
 ```bash
-git clone https://github.com/yourusername/fmp-mcp.git
+git clone https://github.com/houtini-ai/fmp-mcp.git
 cd fmp-mcp
 npm install
 npm run build
@@ -194,7 +381,7 @@ npm run build
     "financial-modeling-prep": {
       "command": "node",
       "args": [
-        "C:\\path\\to\\fmp-mcp\\build\\index.js"
+        "/absolute/path/to/fmp-mcp/build/index.js"
       ],
       "env": {
         "FMP_API_KEY": "your_api_key_here"
@@ -214,15 +401,40 @@ Output goes to the `build/` directory.
 
 ## API Coverage
 
-This MCP server implements 7 core endpoints from the Financial Modeling Prep API:
+This MCP server implements 29 endpoints from the Financial Modeling Prep API:
 
-- Stock Quote
-- Symbol Search
-- Company Profile
-- Income Statement
-- Balance Sheet
-- Cash Flow Statement
-- Stock News
+**Core Market Data** (3)
+- Stock quotes, symbol search, company profiles
+
+**Financial Statements** (6)
+- Income statement, balance sheet, cash flow, key metrics, financial ratios (annual & quarterly)
+
+**Market Performance** (4)
+- Gainers, losers, most active, sector performance
+
+**Analyst Data** (3)
+- Estimates, price targets, ratings
+
+**Insider & Institutional** (2)
+- Insider trading, institutional holders
+
+**Technical Indicators** (3)
+- RSI, SMA, EMA with multiple timeframes
+
+**Historical Data** (1)
+- Intraday charts (1min to 4hour)
+
+**Economic Data** (2)
+- Economic calendar, economic indicators
+
+**Events & Calendars** (1)
+- Earnings calendar
+
+**Index Data** (1)
+- S&P 500 constituents
+
+**News** (1)
+- Stock news (paid feature)
 
 For the complete API reference, see the [FMP Developer Documentation](https://site.financialmodelingprep.com/developer/docs).
 
