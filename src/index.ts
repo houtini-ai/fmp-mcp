@@ -297,7 +297,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       case 'get_stock_news': {
         const { symbol, limit = 10 } = args as { symbol: string; limit?: number };
-        const data = await fetchFMP(`/stock_news?tickers=${symbol.toUpperCase()}&limit=${limit}`);
+        const data = await fetchFMP(`/news/stock?symbols=${symbol.toUpperCase()}&limit=${limit}`);
         return {
           content: [
             {
