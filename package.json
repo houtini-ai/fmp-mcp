@@ -1,0 +1,40 @@
+{
+  "name": "@houtini/fmp-mcp",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) server for Financial Modeling Prep API - stdio transport for Claude Desktop integration",
+  "type": "module",
+  "bin": {
+    "fmp-mcp": "./build/index.js"
+  },
+  "main": "./build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "mcp",
+    "financial-modeling-prep",
+    "fmp",
+    "stock-market",
+    "financial-data",
+    "model-context-protocol",
+    "claude",
+    "ai-tools"
+  ],
+  "author": "Houtini AI",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/houtini/fmp-mcp.git"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.3",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
