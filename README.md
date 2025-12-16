@@ -1,9 +1,10 @@
 # Financial Modeling Prep MCP Server
 
-Model Context Protocol (MCP) server providing access to Financial Modeling Prep's comprehensive financial data API. Get real-time stock quotes, company fundamentals, financial statements, market insights, analyst data, and technical indicators directly in Claude Desktop.
-
+[![Smithery MCP Server](https://smithery.ai/badge/@houtini/fmp-mcp)](https://smithery.ai/server/@houtini/fmp-mcp)
 [![npm version](https://badge.fury.io/js/@houtini%2Ffmp-mcp.svg)](https://badge.fury.io/js/@houtini%2Ffmp-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Model Context Protocol (MCP) server providing access to Financial Modeling Prep's comprehensive financial data API. Get real-time stock quotes, company fundamentals, financial statements, market insights, analyst data, and technical indicators directly in Claude Desktop.
 
 ## Features
 
