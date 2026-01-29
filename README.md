@@ -1,7 +1,7 @@
 # Financial Modeling Prep MCP Server
 
 [![npm version](https://badge.fury.io/js/@houtini%2Ffmp-mcp.svg)](https://badge.fury.io/js/@houtini%2Ffmp-mcp)
-[![Known Vulnerabilities](https://snyk.io/test/github/houtini/fmp-mcp/badge.svg)](https://snyk.io/test/github/houtini/fmp-mcp)
+[![Known Vulnerabilities](https://snyk.io/test/github/houtini-ai/fmp-mcp/badge.svg)](https://snyk.io/test/github/houtini-ai/fmp-mcp)
 [![MCP Registry](https://img.shields.io/badge/MCP-Registry-blue?style=flat-square)](https://registry.modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
