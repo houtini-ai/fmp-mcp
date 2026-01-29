@@ -1,6 +1,6 @@
 {
   "name": "@houtini/fmp-mcp",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "mcpName": "io.github.houtini-ai/fmp",
   "description": "Access financial data and market information via Financial Modeling Prep API",
   "type": "module",
