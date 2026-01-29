@@ -15,6 +15,11 @@ import {
   Tool,
 } from '@modelcontextprotocol/sdk/types.js';
 
+declare const process: {
+  env: Record<string, string | undefined>;
+  exit: (code: number) => never;
+};
+
 const FMP_API_KEY = process.env.FMP_API_KEY;
 const FMP_BASE_URL = 'https://financialmodelingprep.com/stable';
 
