@@ -34,7 +34,7 @@
     "url": "https://github.com/houtini-ai/fmp-mcp.git"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.24.3"
+    "@modelcontextprotocol/sdk": "^1.26.0"
   },
   "devDependencies": {
     "@types/node": "^22.19.7",
