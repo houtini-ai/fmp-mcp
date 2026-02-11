@@ -1,6 +1,6 @@
 {
   "name": "@houtini/fmp-mcp",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "mcpName": "io.github.houtini-ai/fmp",
   "description": "Access financial data and market information via Financial Modeling Prep API",
   "type": "module",
@@ -33,8 +33,15 @@
     "type": "git",
     "url": "https://github.com/houtini-ai/fmp-mcp.git"
   },
+  "homepage": "https://houtini.com/ai-in-finance-using-financial-modeling-prep-mcp-for-real-time-market-data-in-claude/",
+  "files": [
+    "build",
+    "README.md",
+    "LICENSE",
+    "houtini-logo.jpg"
+  ],
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.24.3"
+    "@modelcontextprotocol/sdk": "^1.26.0"
   },
   "devDependencies": {
     "@types/node": "^22.19.7",
