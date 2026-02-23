@@ -516,7 +516,7 @@ const TOOLS: Tool[] = [
 const server = new Server(
   {
     name: 'fmp-mcp-server',
-    version: '1.1.6',
+    version: '1.1.7',
   },
   {
     capabilities: {
