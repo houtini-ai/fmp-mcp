@@ -15,11 +15,6 @@ import {
   Tool,
 } from '@modelcontextprotocol/sdk/types.js';
 
-declare const process: {
-  env: Record<string, string | undefined>;
-  exit: (code: number) => never;
-};
-
 const FMP_API_KEY = process.env.FMP_API_KEY;
 const FMP_BASE_URL = 'https://financialmodelingprep.com/stable';
 
@@ -41,6 +36,13 @@ async function fetchFMP(endpoint: string): Promise<any> {
   }
   
   return response.json();
+}
+
+/** Format FMP API response as MCP tool result */
+function jsonResponse(data: unknown) {
+  return {
+    content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }],
+  };
 }
 
 /**
@@ -514,7 +516,7 @@ const TOOLS: Tool[] = [
 const server = new Server(
   {
     name: 'fmp-mcp-server',
-    version: '1.1.0',
+    version: '1.1.5',
   },
   {
     capabilities: {
@@ -542,426 +544,155 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     switch (name) {
       case 'get_quote': {
         const { symbol } = args as { symbol: string };
-        const data = await fetchFMP(`/quote?symbol=${symbol.toUpperCase()}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(`/quote?symbol=${symbol.toUpperCase()}`));
       }
 
       case 'search_symbol': {
         const { query } = args as { query: string };
-        const data = await fetchFMP(`/search-symbol?query=${encodeURIComponent(query)}&limit=10`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(`/search-symbol?query=${encodeURIComponent(query)}&limit=10`));
       }
 
       case 'get_company_profile': {
         const { symbol } = args as { symbol: string };
-        const data = await fetchFMP(`/profile?symbol=${symbol.toUpperCase()}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(`/profile?symbol=${symbol.toUpperCase()}`));
       }
 
       case 'get_income_statement': {
-        const { symbol, period = 'annual', limit = 5 } = args as { 
-          symbol: string; 
-          period?: string; 
-          limit?: number;
-        };
-        const data = await fetchFMP(`/income-statement?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, period = 'annual', limit = 5 } = args as { symbol: string; period?: string; limit?: number };
+        return jsonResponse(await fetchFMP(`/income-statement?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`));
       }
 
       case 'get_balance_sheet': {
-        const { symbol, period = 'annual', limit = 5 } = args as { 
-          symbol: string; 
-          period?: string; 
-          limit?: number;
-        };
-        const data = await fetchFMP(`/balance-sheet-statement?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, period = 'annual', limit = 5 } = args as { symbol: string; period?: string; limit?: number };
+        return jsonResponse(await fetchFMP(`/balance-sheet-statement?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`));
       }
 
       case 'get_cash_flow': {
-        const { symbol, period = 'annual', limit = 5 } = args as { 
-          symbol: string; 
-          period?: string; 
-          limit?: number;
-        };
-        const data = await fetchFMP(`/cash-flow-statement?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, period = 'annual', limit = 5 } = args as { symbol: string; period?: string; limit?: number };
+        return jsonResponse(await fetchFMP(`/cash-flow-statement?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`));
       }
 
       case 'get_stock_news': {
         const { symbol, limit = 10 } = args as { symbol: string; limit?: number };
-        const data = await fetchFMP(`/news/stock?symbols=${symbol.toUpperCase()}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(`/news/stock?symbols=${symbol.toUpperCase()}&limit=${limit}`));
       }
 
-      case 'get_market_gainers': {
-        const data = await fetchFMP('/biggest-gainers');
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
-      }
+      case 'get_market_gainers':
+        return jsonResponse(await fetchFMP('/biggest-gainers'));
 
-      case 'get_market_losers': {
-        const data = await fetchFMP('/biggest-losers');
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
-      }
+      case 'get_market_losers':
+        return jsonResponse(await fetchFMP('/biggest-losers'));
 
-      case 'get_most_active': {
-        const data = await fetchFMP('/most-actives');
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
-      }
+      case 'get_most_active':
+        return jsonResponse(await fetchFMP('/most-actives'));
 
       case 'get_sector_performance': {
         const { date } = args as { date?: string };
-        const endpoint = date 
-          ? `/sector-performance-snapshot?date=${date}`
-          : '/sector-performance-snapshot?date=' + new Date().toISOString().split('T')[0];
-        const data = await fetchFMP(endpoint);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const d = date || new Date().toISOString().split('T')[0];
+        return jsonResponse(await fetchFMP(`/sector-performance-snapshot?date=${d}`));
       }
 
       case 'get_analyst_estimates': {
-        const { symbol, period = 'annual', limit = 10 } = args as { 
-          symbol: string; 
-          period?: string; 
-          limit?: number;
-        };
-        const data = await fetchFMP(`/analyst-estimates?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, period = 'annual', limit = 10 } = args as { symbol: string; period?: string; limit?: number };
+        return jsonResponse(await fetchFMP(`/analyst-estimates?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`));
       }
 
       case 'get_price_target': {
         const { symbol } = args as { symbol: string };
-        const data = await fetchFMP(`/price-target-summary?symbol=${symbol.toUpperCase()}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(`/price-target-summary?symbol=${symbol.toUpperCase()}`));
       }
 
       case 'get_analyst_ratings': {
         const { symbol } = args as { symbol: string };
-        const data = await fetchFMP(`/grades?symbol=${symbol.toUpperCase()}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(`/grades?symbol=${symbol.toUpperCase()}`));
       }
 
       case 'get_insider_trading': {
         const { symbol, limit = 100 } = args as { symbol: string; limit?: number };
-        const data = await fetchFMP(`/insider-trading/search?symbol=${symbol.toUpperCase()}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(`/insider-trading/search?symbol=${symbol.toUpperCase()}&limit=${limit}`));
       }
 
       case 'get_key_metrics': {
-        const { symbol, period = 'annual', limit = 5 } = args as { 
-          symbol: string; 
-          period?: string; 
-          limit?: number;
-        };
-        const data = await fetchFMP(`/key-metrics?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, period = 'annual', limit = 5 } = args as { symbol: string; period?: string; limit?: number };
+        return jsonResponse(await fetchFMP(`/key-metrics?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`));
       }
 
       case 'get_financial_ratios': {
-        const { symbol, period = 'annual', limit = 5 } = args as { 
-          symbol: string; 
-          period?: string; 
-          limit?: number;
-        };
-        const data = await fetchFMP(`/ratios?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, period = 'annual', limit = 5 } = args as { symbol: string; period?: string; limit?: number };
+        return jsonResponse(await fetchFMP(`/ratios?symbol=${symbol.toUpperCase()}&period=${period}&limit=${limit}`));
       }
 
       case 'get_earnings_calendar': {
         const { from, to } = args as { from?: string; to?: string };
-        let endpoint = '/earnings-calendar';
-        const params = [];
-        if (from) params.push(`from=${from}`);
-        if (to) params.push(`to=${to}`);
-        if (params.length > 0) endpoint += `?${params.join('&')}`;
-        const data = await fetchFMP(endpoint);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const params = [from && `from=${from}`, to && `to=${to}`].filter(Boolean);
+        const endpoint = '/earnings-calendar' + (params.length ? `?${params.join('&')}` : '');
+        return jsonResponse(await fetchFMP(endpoint));
       }
 
       case 'get_economic_calendar': {
         const { from, to } = args as { from?: string; to?: string };
-        let endpoint = '/economic-calendar';
-        const params = [];
-        if (from) params.push(`from=${from}`);
-        if (to) params.push(`to=${to}`);
-        if (params.length > 0) endpoint += `?${params.join('&')}`;
-        const data = await fetchFMP(endpoint);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const params = [from && `from=${from}`, to && `to=${to}`].filter(Boolean);
+        const endpoint = '/economic-calendar' + (params.length ? `?${params.join('&')}` : '');
+        return jsonResponse(await fetchFMP(endpoint));
       }
 
       case 'get_economic_indicator': {
-        const { name, from, to } = args as { name: string; from?: string; to?: string };
-        let endpoint = `/economic-indicators?name=${name}`;
+        const { name: indicator, from, to } = args as { name: string; from?: string; to?: string };
+        let endpoint = `/economic-indicators?name=${indicator}`;
         if (from) endpoint += `&from=${from}`;
         if (to) endpoint += `&to=${to}`;
-        const data = await fetchFMP(endpoint);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(endpoint));
       }
 
       case 'get_technical_indicator_rsi': {
-        const { symbol, timeframe, period = 14 } = args as { 
-          symbol: string; 
-          timeframe: string; 
-          period?: number;
-        };
-        const data = await fetchFMP(`/technical-indicators/rsi?symbol=${symbol.toUpperCase()}&timeframe=${timeframe}&periodLength=${period}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, timeframe, period = 14 } = args as { symbol: string; timeframe: string; period?: number };
+        return jsonResponse(await fetchFMP(`/technical-indicators/rsi?symbol=${symbol.toUpperCase()}&timeframe=${timeframe}&periodLength=${period}`));
       }
 
       case 'get_technical_indicator_sma': {
-        const { symbol, timeframe, period = 10 } = args as { 
-          symbol: string; 
-          timeframe: string; 
-          period?: number;
-        };
-        const data = await fetchFMP(`/technical-indicators/sma?symbol=${symbol.toUpperCase()}&timeframe=${timeframe}&periodLength=${period}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, timeframe, period = 10 } = args as { symbol: string; timeframe: string; period?: number };
+        return jsonResponse(await fetchFMP(`/technical-indicators/sma?symbol=${symbol.toUpperCase()}&timeframe=${timeframe}&periodLength=${period}`));
       }
 
       case 'get_technical_indicator_ema': {
-        const { symbol, timeframe, period = 10 } = args as { 
-          symbol: string; 
-          timeframe: string; 
-          period?: number;
-        };
-        const data = await fetchFMP(`/technical-indicators/ema?symbol=${symbol.toUpperCase()}&timeframe=${timeframe}&periodLength=${period}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        const { symbol, timeframe, period = 10 } = args as { symbol: string; timeframe: string; period?: number };
+        return jsonResponse(await fetchFMP(`/technical-indicators/ema?symbol=${symbol.toUpperCase()}&timeframe=${timeframe}&periodLength=${period}`));
       }
 
       case 'get_historical_chart': {
-        const { symbol, interval, from, to } = args as { 
-          symbol: string; 
-          interval: string; 
-          from?: string; 
-          to?: string;
-        };
+        const { symbol, interval, from, to } = args as { symbol: string; interval: string; from?: string; to?: string };
         let endpoint = `/historical-chart/${interval}?symbol=${symbol.toUpperCase()}`;
         if (from) endpoint += `&from=${from}`;
         if (to) endpoint += `&to=${to}`;
-        const data = await fetchFMP(endpoint);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(endpoint));
       }
 
       case 'get_institutional_holders': {
         const { symbol, limit = 100 } = args as { symbol: string; limit?: number };
-        const data = await fetchFMP(`/institutional-ownership/latest?symbol=${symbol.toUpperCase()}&limit=${limit}`);
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
+        return jsonResponse(await fetchFMP(`/institutional-ownership/latest?symbol=${symbol.toUpperCase()}&limit=${limit}`));
       }
 
-      case 'get_sp500_constituents': {
-        const data = await fetchFMP('/sp500-constituent');
-        return {
-          content: [
-            {
-              type: 'text',
-              text: JSON.stringify(data, null, 2),
-            },
-          ],
-        };
-      }
+      case 'get_sp500_constituents':
+        return jsonResponse(await fetchFMP('/sp500-constituent'));
 
       default:
         throw new Error(`Unknown tool: ${name}`);
     }
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
     return {
-      content: [
-        {
-          type: 'text',
-          text: `Error: ${errorMessage}`,
-        },
-      ],
+      content: [{ type: 'text', text: `Error: ${error instanceof Error ? error.message : String(error)}` }],
       isError: true,
     };
   }
 });
 
-/**
- * Start the server
- */
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  
-  console.error('FMP MCP Server running on stdio');
+  process.stderr.write('FMP MCP Server running on stdio\n');
 }
 
 main().catch((error) => {
-  console.error('Fatal error:', error);
+  process.stderr.write(`Fatal error: ${error}\n`);
   process.exit(1);
 });
