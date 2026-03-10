@@ -7,6 +7,12 @@
 
 Model Context Protocol (MCP) server providing access to Financial Modeling Prep's comprehensive financial data API. Get real-time stock quotes, company fundamentals, financial statements, market insights, analyst data, and technical indicators directly in Claude Desktop.
 
+<p align="center">
+  <a href="https://glama.ai/mcp/servers/@houtini-ai/fmp-mcp">
+    <img width="380" height="200" src="https://glama.ai/mcp/servers/@houtini-ai/fmp-mcp/badge" alt="Financial Modeling Prep MCP server" />
+  </a>
+</p>
+
 ## Features
 
 - **Real-time Market Data**: Live stock quotes with price, volume, and market metrics
