@@ -13,6 +13,10 @@ Model Context Protocol (MCP) server providing access to Financial Modeling Prep'
   </a>
 </p>
 
+> **Quick Navigation**
+>
+> [Features](#features) | [Installation](#installation) | [Tools](#available-tools) | [Usage examples](#usage-examples) | [API rate limits](#api-rate-limits) | [Development](#development) | [Troubleshooting](#troubleshooting)
+
 ## Features
 
 - **Real-time Market Data**: Live stock quotes with price, volume, and market metrics
@@ -61,6 +65,22 @@ Add to your Claude Desktop configuration file:
 Replace `your_api_key_here` with your actual API key from Financial Modeling Prep.
 
 **Important**: Restart Claude Desktop completely after updating the configuration.
+
+### Claude Code (CLI)
+
+Claude Code uses a different registration mechanism -- it doesn't read `claude_desktop_config.json`. Use `claude mcp add` instead:
+
+```bash
+claude mcp add -e FMP_API_KEY=your_api_key_here -s user financial-modeling-prep -- npx -y @houtini/fmp-mcp
+```
+
+Verify with:
+
+```bash
+claude mcp get financial-modeling-prep
+```
+
+You should see `Status: Connected`.
 
 ## Available Tools
 
