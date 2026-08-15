@@ -10,3 +10,15 @@ coverage/
 .vscode/
 .idea/
 .claude/
+
+# --- secrets hardening (never commit) ---
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+*-credentials.json
+service-account*.json
+gsc*.json
