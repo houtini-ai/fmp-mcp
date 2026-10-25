@@ -1,10 +1,9 @@
 # Financial Modeling Prep MCP Server
 
-[![Socket Badge](https://socket.dev/api/badge/npm/package/@houtini/fmp-mcp)](https://socket.dev/npm/package/@houtini/fmp-mcp)
-
 [![npm version](https://badge.fury.io/js/@houtini%2Ffmp-mcp.svg)](https://badge.fury.io/js/@houtini%2Ffmp-mcp)
 [![MCP Registry](https://img.shields.io/badge/MCP-Registry-blue?style=flat-square)](https://registry.modelcontextprotocol.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@houtini/fmp-mcp)](https://socket.dev/npm/package/@houtini/fmp-mcp)
 
 Model Context Protocol (MCP) server providing access to Financial Modeling Prep's comprehensive financial data API. Get real-time stock quotes, company fundamentals, financial statements, market insights, analyst data, and technical indicators directly in Claude Desktop.
 
